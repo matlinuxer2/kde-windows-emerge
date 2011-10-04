@@ -17,7 +17,7 @@ class subinfo(info.infoclass):
     def setDependencies( self ):
         self.buildDependencies['virtual/base'] = 'default'
         self.buildDependencies['dev-util/msys'] = 'default'
-        self.dependencies['testing/pthreads-win32'] = 'default'
+        self.dependencies['win32libs-sources/pthreads-src'] = 'default'
         self.dependencies['win32libs-bin/dbus'] = 'default'
         self.dependencies['win32libs-bin/expat'] = 'default'
 
@@ -30,6 +30,8 @@ class Package(CMakePackageBase):
         CMakePackageBase.__init__( self )
         self.subinfo.options.package.packageName = 'dbus-c++'
         self.subinfo.options.make.slnBaseName = 'dbus-c++'
+	if compiler.isMinGW_W32():
+		self.subinfo.options.configure.defines = ( "-DMINGW_W32=ON" )
 
     def unpack(self):
         if not CMakePackageBase.unpack(self):
